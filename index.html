@@ -7,6 +7,7 @@
 <meta name="description" content="Возможно, это мэтч. Продолжи знакомство в Telegram.">
 <title>LOVE SIGNAL — знакомства в Telegram</title>
 <style>
+[hidden]{display:none!important}
 :root{color-scheme:dark;--bg:#180e17;--card:#241521;--text:#fff4f8;--muted:#c7a8b7;--pink:#ff668a;--hot:#f14b87;--line:#ffffff18}
 *{box-sizing:border-box}
 html{min-height:100%;background:var(--bg)}
@@ -25,10 +26,10 @@ h1{font-size:clamp(44px,6.4vw,78px);line-height:.99;letter-spacing:-.065em;margi
 .gradient{background:linear-gradient(100deg,#ff9ab8,#f14b87 55%,#ffc1a8);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{font-size:17px;line-height:1.75;color:var(--muted);max-width:480px;margin:0 0 27px}
 .lead strong{color:var(--text);font-weight:700}
-.cta{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,390px);min-height:64px;padding:17px 24px;border-radius:20px;text-decoration:none;color:#49172e;font-weight:850;font-size:16px;background:linear-gradient(110deg,#ffd0df,#ff8eaf 58%,#ffc5b4);box-shadow:0 14px 40px #ff699733,inset 0 1px #ffffffa8;transition:transform .2s,box-shadow .2s;-webkit-touch-callout:default;touch-action:manipulation}
+.cta{display:flex;align-items:center;justify-content:center;gap:12px;width:min(100%,390px);min-height:64px;padding:17px 24px;border-radius:20px;text-decoration:none;color:#49172e;font-weight:850;font-size:16px;background:linear-gradient(110deg,#ffd0df,#ff8eaf 58%,#ffc5b4);box-shadow:0 14px 40px #ff699733,inset 0 1px #ffffffa8;transition:transform .2s,box-shadow .2s}
 .cta:hover{transform:translateY(-2px);box-shadow:0 20px 48px #ff699944}
 .cta svg{width:23px;height:23px}
-.subnote{font-size:12px;line-height:1.65;color:#c7a8b7;margin:14px 0 0 5px}
+.subnote{font-size:12px;color:#a98b9a;margin:14px 0 0 5px;line-height:1.65}
 .features{display:flex;flex-wrap:wrap;gap:12px 22px;margin-top:25px;color:#d5b9c6;font-size:12px}
 .features span{display:flex;gap:7px;align-items:center}
 .features svg{width:15px;height:15px;color:#ff82a8}
@@ -59,6 +60,8 @@ h1{font-size:clamp(44px,6.4vw,78px);line-height:.99;letter-spacing:-.065em;margi
 footer{border-top:1px solid var(--line);padding:19px 0 25px;display:flex;justify-content:space-between;gap:15px;color:#927783;font-size:11px}
 footer span:last-child{display:flex;align-items:center;gap:7px}
 footer svg{width:14px;height:14px;color:#ff82a8}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#321a2a;border:1px solid #ffffff20;color:#fff4f8;padding:12px 16px;border-radius:14px;font-size:13px;transition:.2s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:760px){
 .wrap{width:min(540px,100% - 32px)}
 .nav{padding:19px 0}
@@ -114,8 +117,14 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
   <p class="subnote" id="device-hint">Нажми, чтобы продолжить в Telegram.</p>
 
   <div class="features">
-    <span><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Начни с одного сообщения</span>
-    <span><svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Общение в Telegram</span>
+    <span>
+      <svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Начни с одного сообщения
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Общение в Telegram
+    </span>
   </div>
 </section>
 
@@ -174,30 +183,36 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/i.test(userAgent);
 
-  // Настраиваем подсказку для устройства.
+  // На остальных устройствах скрываем кнопку и подсказку.
+  if (!isIOS && !isAndroid) {
+    link.hidden = true;
+    hint.hidden = true;
+    return;
+  }
+
   if (isIOS) {
     buttonText.textContent = "Открыть ссылку Telegram";
     hint.textContent =
       "На iPhone нажми и удерживай кнопку, затем выбери «Открыть ссылку» или «Открыть в браузере», если такой пункт доступен. Если меню не появилось — открой меню TikTok (⋯) и выбери «Открыть в браузере».";
-  } else if (isAndroid) {
+  } else {
     buttonText.textContent = "Перейти в Telegram";
     hint.textContent =
       "Кнопка попробует открыть ссылку в Chrome. Если переход заблокирован TikTok, открой меню (⋯) и выбери «Открыть в браузере».";
-  } else {
-    hint.textContent = "Нажми, чтобы продолжить в Telegram.";
   }
 
-  // На Android пробуем открыть Chrome.
-  // На iOS используем обычную ссылку: принудительно открыть Safari нельзя.
   link.addEventListener("click", (event) => {
     if (isAndroid) {
       event.preventDefault();
-      const fallback = encodeURIComponent("https://t.me/pys365");
 
+      const fallback = encodeURIComponent("https://t.me/pys365");
       window.location.href =
-        "intent://t.me/pys365#Intent;scheme=https;package=com.android.chrome;" +
-        "S.browser_fallback_url=" + fallback + ";end";
+        "intent://t.me/pys365#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=" +
+        fallback +
+        ";end";
     }
+
+    // На iOS используется обычная ссылка.
+    // Сайт не может принудительно запустить Safari из TikTok.
   });
 })();
 </script>
@@ -213,7 +228,6 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
 
   if (language === "ru") return;
 
-  // Основные тексты страницы.
   document.title = "LOVE SIGNAL — meet on Telegram";
   document.querySelector('meta[name="description"]').content =
     "Maybe it's a match. Continue the conversation on Telegram.";
@@ -232,7 +246,6 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
 
   document.getElementById("button-text").textContent = "Open Telegram";
 
-  // Подсказки переведены с учётом типа устройства.
   const userAgent = navigator.userAgent || "";
   const isIOS =
     /iPhone|iPad|iPod/i.test(userAgent) ||
@@ -250,7 +263,6 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
     hint.textContent = "Tap to continue to Telegram.";
   }
 
-  // Нижние подписи и тексты иллюстрации.
   const featureTexts = [
     "Start with one message",
     "Chat on Telegram"
@@ -260,7 +272,6 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
     const textNode = Array.from(item.childNodes).find(
       node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()
     );
-
     if (textNode) textNode.textContent = featureTexts[index] || textNode.textContent;
   });
 
@@ -269,21 +280,15 @@ footer{flex-direction:column;align-items:center;text-align:center;padding-bottom
     "Romantic illustration"
   );
 
-  document.querySelector(".phone-inner h2").innerHTML =
-    "What if<br>it's a match?";
+  document.querySelector(".phone-inner h2").innerHTML = "What if<br>it's a match?";
   document.querySelector(".phone-inner p").textContent =
     "One tap can start a conversation.";
-  document.querySelector(".fakebtn").textContent =
-    "Start chatting →";
+  document.querySelector(".fakebtn").textContent = "Start chatting →";
 
-  document.querySelector(".float.one .ftitle").textContent =
-    "Could it be a match?";
-  document.querySelector(".float.one .fsub").textContent =
-    "Find out in the conversation";
-  document.querySelector(".float.two .ftitle").textContent =
-    "Chat on Telegram";
-  document.querySelector(".float.two .fsub").textContent =
-    "Start with one message";
+  document.querySelector(".float.one .ftitle").textContent = "Could it be a match?";
+  document.querySelector(".float.one .fsub").textContent = "Find out in the conversation";
+  document.querySelector(".float.two .ftitle").textContent = "Chat on Telegram";
+  document.querySelector(".float.two .fsub").textContent = "Start with one message";
 
   const footerNote = document.querySelector("footer span:last-child");
 
