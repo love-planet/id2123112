@@ -29,19 +29,18 @@
    hint.hidden = true;
    return;
  }
- const TELEGRAM_APP_URL = 'tg://resolve?domain=pys365';
  if (isAndroid) {
    closeHelp.addEventListener('click', () => help.classList.remove('visible'));
  }
  if (isIOS) hint.textContent = 'Нажми кнопку — сайт попробует открыть приложение Telegram. Если ничего не произойдёт, открой меню TikTok (⋯) и выбери «Открыть в браузере».';
  else if (isAndroid) hint.textContent = 'Нажми кнопку — сайт попробует открыть приложение Telegram. Если переход не сработает, открой меню TikTok (⋯) и выбери «Открыть в браузере».';
- link.addEventListener('click', (event) => {
-   event.preventDefault();
-   if (isAndroid) help.classList.remove('visible');
-   window.location.href = TELEGRAM_APP_URL;
-   window.setTimeout(() => {
-     if (!document.hidden && isAndroid) help.classList.add('visible');
-   }, 1300);
+ link.addEventListener('click', () => {
+   if (isAndroid) {
+     help.classList.remove('visible');
+     window.setTimeout(() => {
+       if (!document.hidden) help.classList.add('visible');
+     }, 1300);
+   }
  });
 })();
 </script>
