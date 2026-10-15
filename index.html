@@ -13,8 +13,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html,
-    body {
+    html, body {
       margin: 0;
       width: 100%;
       min-height: 100%;
@@ -30,7 +29,7 @@
       padding: 24px;
       color: #fff;
       background:
-        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)),
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.55)),
         url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg?v=2")
         center center / cover no-repeat fixed;
     }
@@ -63,7 +62,7 @@
     }
 
     .telegram-button.disabled {
-      opacity: 0.55;
+      opacity: .55;
       cursor: not-allowed;
     }
 
@@ -71,20 +70,17 @@
       margin-top: 18px;
       font-size: 14px;
       line-height: 1.5;
-      color: rgba(255, 255, 255, 0.95);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,.8);
     }
   </style>
 </head>
 
 <body>
   <main class="container">
-    <a
-      id="telegramLink"
-      class="telegram-button"
-      href="https://t.me/pys365"
-    >Продолжить в Telegram</a>
-
+    <a id="telegramLink" class="telegram-button" role="button">
+      Продолжить в Telegram
+    </a>
     <div id="hint" class="hint"></div>
   </main>
 
@@ -96,7 +92,12 @@
       const link = document.getElementById("telegramLink");
       const hint = document.getElementById("hint");
 
-      // Определяем iOS, включая iPadOS.
+      // Ссылка изначально отсутствует — кнопка не может
+      // открыть Telegram, пока устройство не проверено.
+      link.removeAttribute("href");
+      link.classList.add("disabled");
+      link.setAttribute("aria-disabled", "true");
+
       const isIOS =
         /iPhone|iPad|iPod/i.test(ua) ||
         (
@@ -104,60 +105,54 @@
           navigator.maxTouchPoints > 1
         );
 
-      // Определяем Android.
       const isAndroid = /Android/i.test(ua);
+      const isMobile = isIOS || isAndroid;
 
-      // Остальные операционные системы остаются на лендинге.
-      const isMobileDevice = isIOS || isAndroid;
-
-      // Определяем распространённые встроенные браузеры.
       const isInApp =
         /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\/|Twitter|Snapchat|;\s?wv\)/i.test(ua);
 
-      const language = (navigator.language || "ru").toLowerCase();
-      const en = language.startsWith("en");
+      const en = (navigator.language || "ru")
+        .toLowerCase()
+        .startsWith("en");
 
-      // Windows, macOS, Linux и остальные устройства:
-      // ничего не перенаправляем, оставляем лендинг.
-      if (!isMobileDevice) {
+      // Все остальные ОС: остаёмся на лендинге,
+      // кнопка неактивна, ссылка отсутствует.
+      if (!isMobile) {
+        hint.textContent = "";
         return;
       }
 
-      // iOS и Android во внешнем браузере:
-      // автоматически открываем Telegram.
+      // iOS и Android во внешнем браузере.
       if (!isInApp) {
         window.location.replace(telegram);
         return;
       }
 
-      // iOS во встроенном браузере:
-      // ссылка остаётся на кнопке, но обычный переход запрещён.
+      // iOS во встроенном браузере.
       if (isIOS) {
         hint.textContent = en
           ? 'If Telegram doesn’t open, press and hold the link for 2 seconds, then tap “…” and choose “Open in Browser.”'
           : 'Если Telegram не открылся, нажми и удерживай ссылку 2 секунды, затем нажми «…» и выбери «Открыть в браузере».';
 
         link.href = telegram;
-        link.removeAttribute("target");
         link.classList.remove("disabled");
         link.removeAttribute("aria-disabled");
 
+        // Обычное нажатие не открывает ссылку.
         link.addEventListener("click", event => {
           event.preventDefault();
         });
 
       } else {
-        // Android во встроенном браузере:
-        // кнопка отключена, показываем подсказку.
+        // Android во встроенном браузере.
         hint.textContent = en
           ? 'Tap ⋯ at the top and select "Open in Browser".'
           : 'Нажми ⋯ вверху и выбери «Открыть в браузере».';
 
+        // Ссылка отсутствует, кнопка отключена.
         link.removeAttribute("href");
-        link.removeAttribute("target");
         link.classList.add("disabled");
         link.setAttribute("aria-disabled", "true");
-        link.style.pointerEvents = "none";
       }
     })();
   </script>
