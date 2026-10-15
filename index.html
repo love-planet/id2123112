@@ -96,6 +96,7 @@
       const link = document.getElementById("telegramLink");
       const hint = document.getElementById("hint");
 
+      // Определяем iOS, включая iPadOS.
       const isIOS =
         /iPhone|iPad|iPod/i.test(ua) ||
         (
@@ -103,19 +104,34 @@
           navigator.maxTouchPoints > 1
         );
 
+      // Определяем Android.
+      const isAndroid = /Android/i.test(ua);
+
+      // Остальные операционные системы остаются на лендинге.
+      const isMobileDevice = isIOS || isAndroid;
+
+      // Определяем распространённые встроенные браузеры.
       const isInApp =
         /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\/|Twitter|Snapchat|;\s?wv\)/i.test(ua);
 
       const language = (navigator.language || "ru").toLowerCase();
       const en = language.startsWith("en");
 
-      // В обычном внешнем браузере автоматически переходим в Telegram.
+      // Windows, macOS, Linux и остальные устройства:
+      // ничего не перенаправляем, оставляем лендинг.
+      if (!isMobileDevice) {
+        return;
+      }
+
+      // iOS и Android во внешнем браузере:
+      // автоматически открываем Telegram.
       if (!isInApp) {
         window.location.replace(telegram);
         return;
       }
 
-      // iOS: ссылка остаётся на кнопке, но нажатие блокируется.
+      // iOS во встроенном браузере:
+      // ссылка остаётся на кнопке, но обычный переход запрещён.
       if (isIOS) {
         hint.textContent = en
           ? 'If Telegram doesn’t open, press and hold the link for 2 seconds, then tap “…” and choose “Open in Browser.”'
@@ -131,7 +147,8 @@
         });
 
       } else {
-        // Android и другие устройства во встроенном браузере.
+        // Android во встроенном браузере:
+        // кнопка отключена, показываем подсказку.
         hint.textContent = en
           ? 'Tap ⋯ at the top and select "Open in Browser".'
           : 'Нажми ⋯ вверху и выбери «Открыть в браузере».';
