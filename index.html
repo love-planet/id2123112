@@ -9,12 +9,14 @@
 
 <style>
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
+  --bg: #180e1b;
+  --panel: #241322;
   --text: #fff7fb;
-  --muted: #e0cedb;
+  --muted: #cbb9c8;
   --pink: #ff4f91;
   --coral: #ff826f;
-  --line: rgba(255,255,255,.18);
+  --line: rgba(255,255,255,.13);
 }
 
 * {
@@ -39,20 +41,14 @@ body {
   min-height: 100svh;
   min-height: 100dvh;
   width: 100%;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(18,8,18,.48),
-      rgba(18,8,18,.72)
-    ),
-    url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg")
-    center center / cover no-repeat;
+  background: url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg?v=2")
+    center center / contain no-repeat #000;
   position: relative;
   isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(18px,4vh,36px) clamp(14px,4vw,36px);
+  padding: 0;
 }
 
 .glow {
@@ -79,13 +75,13 @@ body {
 }
 
 .wrap {
-  width: min(100%,420px);
+  width: min(100%, 420px);
   text-align: center;
   position: relative;
 }
 
 .brand {
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   gap: 9px;
@@ -99,7 +95,7 @@ body {
   width: 29px;
   height: 29px;
   border-radius: 10px;
-  background: linear-gradient(145deg,var(--pink),var(--coral));
+  background: linear-gradient(145deg, var(--pink), var(--coral));
   display: grid;
   place-items: center;
   box-shadow: 0 5px 22px #ff4f9140;
@@ -132,7 +128,7 @@ body {
 
 h1 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(43px,12vw,62px);
+  font-size: clamp(43px, 12vw, 62px);
   line-height: .99;
   letter-spacing: -.045em;
   font-weight: 500;
@@ -169,7 +165,7 @@ h1 em {
   height: 205px;
   border-radius: 50%;
   border: 1px solid #ff8cb32e;
-  background: radial-gradient(circle,#ff54801d 0,transparent 68%);
+  background: radial-gradient(circle, #ff54801d 0, transparent 68%);
 }
 
 .portrait {
@@ -179,7 +175,7 @@ h1 em {
   border-radius: 88px 88px 55px 55px;
   overflow: hidden;
   border: 1px solid #ffffff24;
-  background: linear-gradient(160deg,#f7a6b9,#8e4269 60%,#30162e);
+  background: linear-gradient(160deg, #f7a6b9, #8e4269 60%, #30162e);
   box-shadow: 0 20px 70px #f64a8228;
 }
 
@@ -189,7 +185,7 @@ h1 em {
   width: 78px;
   height: 94px;
   border-radius: 48% 48% 44% 44%;
-  background: linear-gradient(110deg,#f5c5b0,#c47e79);
+  background: linear-gradient(110deg, #f5c5b0, #c47e79);
   left: 39px;
   top: 34px;
   box-shadow: 0 -17px 0 7px #33202d;
@@ -201,7 +197,7 @@ h1 em {
   width: 125px;
   height: 105px;
   border-radius: 60% 60% 0 0;
-  background: linear-gradient(120deg,#34202f,#170f1b);
+  background: linear-gradient(120deg, #34202f, #170f1b);
   left: 15px;
   bottom: -28px;
 }
@@ -213,9 +209,24 @@ h1 em {
   animation: float 3.5s ease-in-out infinite;
 }
 
-.s1 { top: 35px; left: 39px; }
-.s2 { right: 35px; top: 58px; font-size: 17px; animation-delay: .7s; }
-.s3 { bottom: 30px; left: 55px; font-size: 15px; animation-delay: 1.2s; }
+.s1 {
+  top: 35px;
+  left: 39px;
+}
+
+.s2 {
+  right: 35px;
+  top: 58px;
+  font-size: 17px;
+  animation-delay: .7s;
+}
+
+.s3 {
+  bottom: 30px;
+  left: 55px;
+  font-size: 15px;
+  animation-delay: 1.2s;
+}
 
 .bubble {
   position: absolute;
@@ -243,32 +254,48 @@ h1 em {
   margin-top: 2px;
 }
 
-.b1 { left: 0; top: 88px; }
-.b2 { right: 0; bottom: 39px; }
+.b1 {
+  left: 0;
+  top: 88px;
+}
+
+.b2 {
+  right: 0;
+  bottom: 39px;
+}
 
 .mini-heart {
   color: #ff79a7;
   font-size: 17px;
 }
 
+.hint {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fff;
+  margin: 0 0 9px;
+  text-shadow: 0 1px 3px #000;
+}
+
 .cta {
-  width: 100%;
+  width: min(290px, calc(100vw - 40px));
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   border: 0;
-  border-radius: 17px;
-  padding: 17px 20px;
-  min-height: 58px;
-  background: linear-gradient(105deg,#ff4f91,#ff786f);
+  border-radius: 14px;
+  padding: 16px 20px;
+  min-height: 56px;
+  background: linear-gradient(105deg, #ff4f91, #ff786f);
   color: white;
   text-decoration: none;
   font-weight: 800;
   font-size: 15px;
   letter-spacing: .01em;
-  box-shadow: 0 12px 32px #ff4f913b;
-  transition: transform .18s,filter .18s;
+  box-shadow: 0 8px 24px #0003;
+  transition: transform .18s, filter .18s;
 }
 
 .cta:active {
@@ -282,100 +309,33 @@ h1 em {
   flex: none;
 }
 
-.foot {
-  font-size: 11px;
-  color: #e0cedb;
-  margin: 15px auto 0;
-  line-height: 1.6;
-}
-
-.foot span {
-  color: #ffd0e2;
-}
-
-.desktop {
+.foot, .desktop {
   display: none;
-  color: #ead5e2;
-  margin-top: 28px;
-  font-size: 14px;
-  line-height: 1.6;
-  border: 1px solid var(--line);
-  padding: 16px;
-  border-radius: 16px;
-  background: #ffffff08;
 }
 
 @keyframes float {
-  0%,100% { transform: translateY(0) rotate(0); }
-  50% { transform: translateY(-7px) rotate(5deg); }
-}
-
-@media (max-width: 360px) {
-  .art {
-    transform: scale(.92);
-    margin: 5px auto;
+  0%, 100% {
+    transform: translateY(0) rotate(0);
   }
-
-  h1 {
-    font-size: 41px;
-  }
-
-  .eyebrow {
-    margin-top: 20px;
+  50% {
+    transform: translateY(-7px) rotate(5deg);
   }
 }
 
 @media (min-width: 700px) {
   #app {
-    background-image:
-      linear-gradient(
-        180deg,
-        rgba(18,8,18,.55),
-        rgba(18,8,18,.75)
-      ),
-      url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg");
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     background-attachment: scroll;
-    padding: 36px;
   }
 
   .wrap {
     max-width: 440px;
   }
-
-  .desktop {
-    display: block;
-  }
-
-  .cta,
-  .foot,
-  .eyebrow,
-  .art,
-  .sub,
-  h1 {
-    display: none;
-  }
-
-  .brand {
-    margin-bottom: 24px;
-  }
-
-  .desktop h2 {
-    font-family: Georgia, serif;
-    font-size: 27px;
-    font-weight: 500;
-    margin: 0 0 8px;
-  }
-
-  .desktop p {
-    margin: 0;
-    color: var(--muted);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,*:before,*:after {
+  *, *:before, *:after {
     animation: none !important;
     transition: none !important;
   }
@@ -385,110 +345,73 @@ h1 em {
 
 <body>
 <div id="app">
-  <div class="glow"></div>
-  <div class="glow two"></div>
-
   <main class="wrap">
-    <div class="brand">
-      <span class="brand-mark">♥</span>
-      <span>LOVE SIGNAL</span>
-    </div>
 
-    <div class="eyebrow">
-      <span class="dot"></span>
-      <span data-ru="ТВОЙ ЗНАК СВЕРХУ"
-            data-en="YOUR LITTLE SIGN">ТВОЙ ЗНАК СВЕРХУ</span>
-    </div>
-
-    <h1
-      data-ru="Иногда всё<br>начинается с <em>привет.</em>"
-      data-en="Sometimes it all<br>starts with <em>hello.</em>">
-      Иногда всё<br>начинается с <em>привет.</em>
-    </h1>
-
-    <p class="sub"
-       data-ru="Новые знакомства, лёгкий флирт и люди, с которыми совпадает настроение."
-       data-en="New connections, a little flirting, and people who just get your vibe.">
-      Новые знакомства, лёгкий флирт и люди, с которыми совпадает настроение.
+    <p class="hint" id="languageHint">
+      Если не открыло ТГ канал, нажми ↗️↗️ вверху ▪️▪️▪️ и Открыть в Браузере.
     </p>
 
-    <div class="art" aria-hidden="true">
-      <div class="halo"></div>
-      <span class="spark s1">✦</span>
-      <span class="spark s2">♡</span>
-      <span class="spark s3">✧</span>
-      <div class="portrait"></div>
-
-      <div class="bubble b1">
-        <span class="mini-heart">♡</span>
-        <span>
-          <b data-ru="Есть совпадение?"
-             data-en="A little spark?"></b>
-          <small data-ru="Возможно, это оно"
-                 data-en="Maybe this is it"></small>
-        </span>
-      </div>
-
-      <div class="bubble b2">
-        <span class="mini-heart">✦</span>
-        <span>
-          <b data-ru="Твоя история"
-             data-en="Your story"></b>
-          <small data-ru="Начинается здесь"
-                 data-en="starts here"></small>
-        </span>
-      </div>
-    </div>
-
-    <a class="cta"
-       id="telegramBtn"
-       href="https://t.me/pys365"
-       target="_blank"
-       rel="noopener noreferrer">
-
-      <svg class="tg-icon" viewBox="0 0 24 24"
-           fill="none" aria-hidden="true">
-        <path d="M21.4 4.6 18.2 20c-.24 1.09-.87 1.36-1.77.85l-4.9-3.61-2.37 2.28c-.26.26-.48.48-.98.48l.35-4.98 9.07-8.2c.39-.35-.09-.55-.6-.2L5.79 13.85.96 12.34c-1.05-.33-1.07-1.05.22-1.56L20.06 3.4c.87-.32 1.63.21 1.34 1.2Z"
-              fill="currentColor"/>
+    <a
+      class="cta"
+      id="telegramBtn"
+      href="https://t.me/pys365"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg
+        class="tg-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M21.4 4.6 18.2 20c-.24 1.09-.87 1.36-1.77.85l-4.9-3.61-2.37 2.28c-.26.26-.48.48-.98.48l.35-4.98 9.07-8.2c.39-.35-.09-.55-.6-.2L5.79 13.85.96 12.34c-1.05-.33-1.07-1.05.22-1.56L20.06 3.4c.87-.32 1.63.21 1.34 1.2Z"
+          fill="currentColor"
+        />
       </svg>
 
-      <span data-ru="Продолжить в Telegram"
-            data-en="Continue to Telegram">Продолжить в Telegram</span>
+      <span
+        id="buttonText"
+        data-ru="Продолжить в Telegram"
+        data-en="Continue to Telegram"
+      >Продолжить в Telegram</span>
+
       <span aria-hidden="true">↗</span>
     </a>
 
-    <p class="foot"
-       data-ru="Нажми, чтобы продолжить знакомство <span>♥</span>"
-       data-en="Tap to keep the connection going <span>♥</span>">
-      Нажми, чтобы продолжить знакомство <span>♥</span>
-    </p>
-
-    <div class="desktop">
-      <h2 data-ru="Твоя история ждёт ✦"
-          data-en="Your story is waiting ✦">
-        Твоя история ждёт ✦
-      </h2>
-      <p data-ru="Открой эту страницу на телефоне, чтобы продолжить в Telegram."
-         data-en="Open this page on your phone to continue to Telegram.">
-        Открой эту страницу на телефоне, чтобы продолжить в Telegram.
-      </p>
-    </div>
   </main>
 </div>
 
 <script>
-(function () {
-  const lang = (navigator.language || "ru")
-    .toLowerCase()
-    .startsWith("ru") ? "ru" : "en";
+(() => {
+  const lang = (
+    navigator.languages && navigator.languages[0] ||
+    navigator.language ||
+    'ru'
+  ).toLowerCase();
 
-  document.documentElement.lang = lang;
+  const isEnglish = /^(en)(-|$)/.test(lang);
 
-  document.querySelectorAll("[data-" + lang + "]")
-    .forEach(function (el) {
-      el.innerHTML = el.getAttribute("data-" + lang);
-    });
+  const hint = document.getElementById('languageHint');
+  const button = document.getElementById('buttonText');
+
+  if (isEnglish) {
+    document.documentElement.lang = 'en';
+
+    hint.textContent =
+      'If the Telegram channel didn’t open, tap ↗️↗️ at the top ▪️▪️▪️ and select “Open in Browser.”';
+
+    button.textContent = button.dataset.en;
+  } else {
+    document.documentElement.lang = 'ru';
+
+    hint.textContent =
+      'Если не открыло ТГ канал, нажми ↗️↗️ вверху ▪️▪️▪️ и Открыть в Браузере.';
+
+    button.textContent = button.dataset.ru;
+  }
 })();
 </script>
+
 </body>
 </html>
