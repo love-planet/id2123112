@@ -1,221 +1,243 @@
-```html
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#180e1b">
-<title>LOVE SIGNAL — знакомства</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <title>Continue to Telegram</title>
 
-<style>
-:root {
-  --pink: #ff4f91;
-  --coral: #ff826f;
-  --text: #fff7fb;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-html, body {
-  margin: 0;
-  min-height: 100%;
-  font-family: Inter, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  background: #180e1b;
-  color: var(--text);
-}
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #fff;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55)),
+        url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg?v=2")
+        center center / cover no-repeat fixed;
+    }
 
-body {
-  min-height: 100svh;
-  overflow-x: hidden;
-}
+    .container {
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+    }
 
-#app {
-  min-height: 100svh;
-  min-height: 100dvh;
-  width: 100%;
-  background: url("https://i.postimg.cc/76CC585T/photo-2026-10-14-23-17-26.jpg?v=2")
-    center center / contain no-repeat #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+    .telegram-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 56px;
+      padding: 16px 20px;
+      border: none;
+      border-radius: 12px;
+      background: #229ed9;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: none;
+    }
 
-.wrap {
-  width: 100%;
-  max-width: 420px;
-  text-align: center;
-}
+    .telegram-button.disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
 
-.hint {
-  font-size: 12px;
-  line-height: 1.6;
-  color: #fff;
-  margin: 0 auto 16px;
-  max-width: 310px;
-  text-shadow: 0 1px 3px #000;
-}
+    .hint {
+      margin-top: 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
 
-.cta {
-  width: min(290px, calc(100vw - 40px));
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border: 0;
-  border-radius: 14px;
-  padding: 16px 20px;
-  min-height: 56px;
-  background: linear-gradient(105deg, #ff4f91, #ff786f);
-  color: white;
-  text-decoration: none;
-  font-weight: 800;
-  font-size: 15px;
-  box-shadow: 0 8px 24px #ff4f9150;
-  animation: pulse 1.8s ease-in-out infinite;
-  cursor: pointer;
-}
+    .progress {
+      display: none;
+      height: 4px;
+      margin-top: 14px;
+      overflow: hidden;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.25);
+    }
 
-.cta.disabled {
-  opacity: .65;
-  cursor: default;
-  animation: none;
-}
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: #229ed9;
+    }
 
-.tg-icon {
-  width: 22px;
-  height: 22px;
-  flex: none;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 8px 24px #ff4f9150;
-  }
-  50% {
-    transform: scale(1.035);
-    box-shadow: 0 10px 32px #ff4f9180;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation: none !important;
-  }
-}
-</style>
+    .progress.active {
+      display: block;
+    }
+  </style>
 </head>
 
 <body>
-<div id="app">
-  <main class="wrap">
-
-    <p class="hint" id="languageHint">
-      Нажми ⋯ вверху и выбери «Открыть в браузере».
-    </p>
-
-    <a class="cta"
-       id="telegramBtn"
-       href="https://t.me/pys365"
-       target="_blank"
-       rel="noopener noreferrer"
-       aria-disabled="true">
-
-      <svg class="tg-icon"
-           viewBox="0 0 24 24"
-           fill="none"
-           aria-hidden="true">
-        <path d="M21.4 4.6 18.2 20c-.24 1.09-.87 1.36-1.77.85l-4.9-3.61-2.37 2.28c-.26.26-.48.48-.98.48l.35-4.98 9.07-8.2c.39-.35-.09-.55-.6-.2L5.79 13.85.96 12.34c-1.05-.33-1.07-1.05.22-1.56L20.06 3.4c.87-.32 1.63.21 1.34 1.2Z"
-              fill="currentColor"/>
-      </svg>
-
-      <span data-ru="Продолжить в Telegram"
-            data-en="Continue to Telegram">
-        Продолжить в Telegram
-      </span>
-
-      <span aria-hidden="true">↗</span>
+  <main class="container">
+    <a
+      id="telegramLink"
+      class="telegram-button"
+      href="https://t.me/pys365"
+    >
+      Продолжить в Telegram
     </a>
 
+    <div id="hint" class="hint"></div>
+
+    <div id="progress" class="progress">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
   </main>
-</div>
 
-<script>
-(() => {
-  const ua = navigator.userAgent || "";
+  <script>
+    (() => {
+      const telegram = "https://t.me/pys365";
+      const ua = navigator.userAgent || "";
 
-  const telegram = "https://t.me/pys365";
+      const link = document.getElementById("telegramLink");
+      const hint = document.getElementById("hint");
+      const progress = document.getElementById("progress");
+      const progressBar = document.getElementById("progressBar");
 
-  // Определяем iOS, включая iPadOS.
-  const isIOS =
-    /iPhone|iPad|iPod/i.test(ua) ||
-    (navigator.platform === "MacIntel" &&
-     navigator.maxTouchPoints > 1);
+      const isIOS =
+        /iPhone|iPad|iPod/i.test(ua) ||
+        (navigator.platform === "MacIntel" &&
+         navigator.maxTouchPoints > 1);
 
-  // Определяем встроенные браузеры.
-  const inApp =
-    /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|;\s?wv\)/i.test(ua);
+      const isInApp =
+        /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\/|Twitter|Snapchat|;\s?wv\)/i.test(ua);
 
-  const hint = document.getElementById("languageHint");
-  const link = document.getElementById("telegramBtn");
-  const button = link.querySelector("[data-ru]");
+      const language = (navigator.language || "ru").toLowerCase();
+      const en = language.startsWith("en");
 
-  const lang = (
-    navigator.languages?.[0] ||
-    navigator.language ||
-    "ru"
-  ).toLowerCase();
+      let holdTimer = null;
+      let animationFrame = null;
+      let holdStarted = 0;
 
-  const en = /^(en)(-|$)/.test(lang);
+      function cancelHold() {
+        if (holdTimer !== null) {
+          clearTimeout(holdTimer);
+          holdTimer = null;
+        }
 
-  // Выбираем язык кнопки.
-  document.documentElement.lang = en ? "en" : "ru";
+        if (animationFrame !== null) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = null;
+        }
 
-  button.textContent = en
-    ? button.dataset.en
-    : button.dataset.ru;
+        progress.classList.remove("active");
+        progressBar.style.width = "0%";
+      }
 
-  // Если это обычный внешний браузер,
-  // автоматически переходим в Telegram.
-  if (!inApp) {
-    window.location.replace(telegram);
-    return;
-  }
+      // Во внешнем браузере сразу открываем Telegram.
+      if (!isInApp) {
+        window.location.replace(telegram);
+        return;
+      }
 
-  if (isIOS) {
-    // iOS: кнопка активна.
-    hint.textContent = en
-  ? 'If Telegram didn’t open, press and hold the button for 2 seconds, then tap “...” and choose “Open in Browser.”'
-  : 'Если Telegram не открылся, нажми и удерживай кнопку 2 секунды, затем нажми «…» и выбери «Открыть в браузере».';
+      // Встроенный браузер iOS.
+      if (isIOS) {
+        hint.textContent = en
+          ? 'If Telegram doesn’t open, press and hold the button for 5 seconds, then tap “…” and choose “Open in Browser.”'
+          : 'Если Telegram не открылся, нажми и удерживай кнопку 5 секунд. Если не сработает, нажми «…» и выбери «Открыть в браузере».';
 
+        link.removeAttribute("target");
+        link.removeAttribute("href");
+        link.classList.remove("disabled");
+        link.removeAttribute("aria-disabled");
 
-    link.href = telegram;
-    link.target = "_blank";
-    link.classList.remove("disabled");
-    link.removeAttribute("aria-disabled");
-    link.style.pointerEvents = "auto";
+        link.style.pointerEvents = "auto";
+        link.style.userSelect = "none";
+        link.style.webkitUserSelect = "none";
+        link.style.webkitTouchCallout = "none";
+        link.style.touchAction = "none";
 
-  } else {
-    // Остальные устройства во встроенном браузере:
-    // кнопка неактивна, показываем инструкцию.
-    hint.textContent = en
-      ? 'Tap ⋯ at the top and select "Open in Browser".'
-      : 'Нажми ⋯ вверху и выбери «Открыть в браузере».';
+        // Не показываем системное меню при удержании.
+        link.addEventListener("contextmenu", event => {
+          event.preventDefault();
+        });
 
-    link.removeAttribute("href");
-    link.removeAttribute("target");
-    link.classList.add("disabled");
-    link.setAttribute("aria-disabled", "true");
-    link.style.pointerEvents = "none";
-  }
-})();
-</script>
+        // Обычное нажатие не открывает Telegram.
+        link.addEventListener("click", event => {
+          event.preventDefault();
+        });
 
+        // Запуск пятисекундного удержания.
+        link.addEventListener("pointerdown", event => {
+          if (event.pointerType === "mouse") return;
+
+          cancelHold();
+          holdStarted = performance.now();
+          progress.classList.add("active");
+
+          const updateProgress = () => {
+            const elapsed = performance.now() - holdStarted;
+            const percent = Math.min((elapsed / 5000) * 100, 100);
+
+            progressBar.style.width = percent + "%";
+
+            if (elapsed < 5000) {
+              animationFrame = requestAnimationFrame(updateProgress);
+            }
+          };
+
+          animationFrame = requestAnimationFrame(updateProgress);
+
+          holdTimer = setTimeout(() => {
+            holdTimer = null;
+
+            if (animationFrame !== null) {
+              cancelAnimationFrame(animationFrame);
+              animationFrame = null;
+            }
+
+            progressBar.style.width = "100%";
+            window.location.href = telegram;
+          }, 5000);
+        });
+
+        link.addEventListener("pointerup", cancelHold);
+        link.addEventListener("pointercancel", cancelHold);
+        link.addEventListener("pointerleave", cancelHold);
+
+      } else {
+        // Android и остальные устройства во встроенном браузере.
+        hint.textContent = en
+          ? 'Tap ⋯ at the top and select "Open in Browser".'
+          : 'Нажми ⋯ вверху и выбери «Открыть в браузере».';
+
+        link.removeAttribute("href");
+        link.removeAttribute("target");
+        link.classList.add("disabled");
+        link.setAttribute("aria-disabled", "true");
+        link.style.pointerEvents = "none";
+      }
+    })();
+  </script>
 </body>
 </html>
-```
