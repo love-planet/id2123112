@@ -59,8 +59,7 @@
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
-      -webkit-touch-callout: none;
-      touch-action: none;
+      -webkit-touch-callout: default;
     }
 
     .telegram-button.disabled {
@@ -75,25 +74,6 @@
       color: rgba(255, 255, 255, 0.95);
       text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
     }
-
-    .progress {
-      display: none;
-      height: 4px;
-      margin-top: 14px;
-      overflow: hidden;
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    .progress-bar {
-      width: 0;
-      height: 100%;
-      background: #229ed9;
-    }
-
-    .progress.active {
-      display: block;
-    }
   </style>
 </head>
 
@@ -103,15 +83,9 @@
       id="telegramLink"
       class="telegram-button"
       href="https://t.me/pys365"
-    >
-      Продолжить в Telegram
-    </a>
+    >Продолжить в Telegram</a>
 
     <div id="hint" class="hint"></div>
-
-    <div id="progress" class="progress">
-      <div id="progressBar" class="progress-bar"></div>
-    </div>
   </main>
 
   <script>
@@ -121,13 +95,13 @@
 
       const link = document.getElementById("telegramLink");
       const hint = document.getElementById("hint");
-      const progress = document.getElementById("progress");
-      const progressBar = document.getElementById("progressBar");
 
       const isIOS =
         /iPhone|iPad|iPod/i.test(ua) ||
-        (navigator.platform === "MacIntel" &&
-         navigator.maxTouchPoints > 1);
+        (
+          navigator.platform === "MacIntel" &&
+          navigator.maxTouchPoints > 1
+        );
 
       const isInApp =
         /TikTok|musical_ly|Bytedance|Instagram|FBAN|FBAV|FB_IAB|Line\/|Twitter|Snapchat|;\s?wv\)/i.test(ua);
@@ -135,98 +109,29 @@
       const language = (navigator.language || "ru").toLowerCase();
       const en = language.startsWith("en");
 
-      let holdTimer = null;
-      let animationFrame = null;
-      let holdStarted = 0;
-
-      function cancelHold() {
-        if (holdTimer !== null) {
-          clearTimeout(holdTimer);
-          holdTimer = null;
-        }
-
-        if (animationFrame !== null) {
-          cancelAnimationFrame(animationFrame);
-          animationFrame = null;
-        }
-
-        progress.classList.remove("active");
-        progressBar.style.width = "0%";
-      }
-
-      // Во внешнем браузере сразу открываем Telegram.
+      // В обычном внешнем браузере автоматически переходим в Telegram.
       if (!isInApp) {
         window.location.replace(telegram);
         return;
       }
 
-      // Встроенный браузер iOS.
+      // iOS: ссылка остаётся на кнопке, но нажатие блокируется.
       if (isIOS) {
         hint.textContent = en
-          ? 'If Telegram doesn’t open, press and hold the button for 5 seconds, then tap “…” and choose “Open in Browser.”'
-          : 'Если Telegram не открылся, нажми и удерживай кнопку 5 секунд. Если не сработает, нажми «…» и выбери «Открыть в браузере».';
+          ? 'If Telegram doesn’t open, press and hold the link for 2 seconds, then tap “…” and choose “Open in Browser.”'
+          : 'Если Telegram не открылся, нажми и удерживай ссылку 2 секунды, затем нажми «…» и выбери «Открыть в браузере».';
 
+        link.href = telegram;
         link.removeAttribute("target");
-        link.removeAttribute("href");
         link.classList.remove("disabled");
         link.removeAttribute("aria-disabled");
 
-        link.style.pointerEvents = "auto";
-        link.style.userSelect = "none";
-        link.style.webkitUserSelect = "none";
-        link.style.webkitTouchCallout = "none";
-        link.style.touchAction = "none";
-
-        // Не показываем системное меню при удержании.
-        link.addEventListener("contextmenu", event => {
-          event.preventDefault();
-        });
-
-        // Обычное нажатие не открывает Telegram.
         link.addEventListener("click", event => {
           event.preventDefault();
         });
 
-        // Запуск пятисекундного удержания.
-        link.addEventListener("pointerdown", event => {
-          if (event.pointerType === "mouse") return;
-
-          cancelHold();
-          holdStarted = performance.now();
-          progress.classList.add("active");
-
-          const updateProgress = () => {
-            const elapsed = performance.now() - holdStarted;
-            const percent = Math.min((elapsed / 5000) * 100, 100);
-
-            progressBar.style.width = percent + "%";
-
-            if (elapsed < 5000) {
-              animationFrame = requestAnimationFrame(updateProgress);
-            }
-          };
-
-          animationFrame = requestAnimationFrame(updateProgress);
-
-          holdTimer = setTimeout(() => {
-            holdTimer = null;
-
-            if (animationFrame !== null) {
-              cancelAnimationFrame(animationFrame);
-              animationFrame = null;
-            }
-
-            progressBar.style.width = "100%";
-            window.location.href = telegram;
-          }, 5000);
-        });
-
-        link.addEventListener("pointerup", cancelHold);
-        link.addEventListener("pointercancel", cancelHold);
-        link.addEventListener("pointerleave", cancelHold);
-
       } else {
-        // Android и остальные устройства во встроенном браузере.
+        // Android и другие устройства во встроенном браузере.
         hint.textContent = en
           ? 'Tap ⋯ at the top and select "Open in Browser".'
           : 'Нажми ⋯ вверху и выбери «Открыть в браузере».';
