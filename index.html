@@ -190,8 +190,9 @@ body {
   if (isIOS) {
     // iOS: кнопка активна.
     hint.textContent = en
-      ? 'If Telegram does not open, tap the menu above and select "Open in Browser".'
-      : 'Если Telegram не открылся, нажми ⋯ вверху и выбери «Открыть в браузере».';
+  ? 'If Telegram didn’t open, press and hold the button for 2 seconds, then tap “...” and choose “Open in Browser.”'
+  : 'Если Telegram не открылся, нажми и удерживай кнопку 2 секунды, затем нажми «…» и выбери «Открыть в браузере».';
+
 
     link.href = telegram;
     link.target = "_blank";
